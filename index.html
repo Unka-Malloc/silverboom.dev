@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Silverboom — the agent-infrastructure matrix</title>
+<meta name="description" content="One matrix that registers, governs and ships the shared agent-infrastructure crates: A4AA, A4MP, AwP, VA, AHE, AOR, Acativa and CL.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="lockup" href="#top" aria-label="Silverboom">
+    <svg viewBox="0 0 20 28" aria-hidden="true"><path class="lk-body" d="M10 1 C4.8 1 3 5.5 3 9.5 V21 a2 2 0 0 0 2 2 h10 a2 2 0 0 0 2-2 V9.5 C17 5.5 15.2 1 10 1 Z"/><rect class="lk-primer" x="3" y="17" width="14" height="6" rx="2"/></svg>
+    <span>SILVERBOOM</span>
+  </a>
+  <nav class="site-nav">
+    <a href="#rack">Rack</a>
+    <a href="#stack">Stack</a>
+    <a href="#origin">Origin</a>
+    <a href="https://github.com/Unka-Malloc" rel="noopener">GitHub</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ============ hero ============ -->
+  <section class="hero" id="top">
+    <div class="stage">
+      <svg class="scene-svg" viewBox="0 0 1440 820" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="bulletGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#eef0f3"/><stop offset=".45" stop-color="#c7ccd3"/>
+            <stop offset=".75" stop-color="#8f98a1"/><stop offset="1" stop-color="#6b747e"/>
+          </linearGradient>
+        </defs>
+        <path class="traj" d="M -60 790 Q 400 720 740 540 T 1095 300 L 1530 80" />
+        <g class="target" transform="translate(1095 300)">
+          <circle r="158"/><circle r="110"/><circle r="62"/>
+          <path d="M -190 0 H -158 M 158 0 H 190 M 0 -190 V -158 M 0 158 V 190"/>
+          <circle class="bull" r="10"/>
+        </g>
+        <circle class="flash" cx="1095" cy="300" r="0"/>
+        <g class="bullet"><rect x="-34" y="-9" width="56" height="18" rx="9"/><rect class="primer" x="14" y="-9" width="12" height="18" rx="5"/></g>
+      </svg>
+
+      <span class="scar" style="--x:8%;--y:78%">A4AA</span>
+      <span class="scar" style="--x:14%;--y:66%">A4MP</span>
+      <span class="scar" style="--x:22%;--y:85%">AwP</span>
+      <span class="scar" style="--x:30%;--y:68%">VA</span>
+      <span class="scar" style="--x:37%;--y:86%">AHE</span>
+      <span class="scar" style="--x:44%;--y:68%">AOR</span>
+      <span class="scar" style="--x:52%;--y:88%">ACA</span>
+      <span class="scar" style="--x:56%;--y:73%">CL</span>
+
+      <div class="slot" style="--x:62.5%;--y:61%"></div>
+      <div class="slot" style="--x:71.4%;--y:61%"></div>
+      <div class="slot" style="--x:80.3%;--y:61%"></div>
+      <div class="slot" style="--x:89.2%;--y:61%"></div>
+      <div class="slot" style="--x:62.5%;--y:72%"></div>
+      <div class="slot" style="--x:71.4%;--y:72%"></div>
+      <div class="slot" style="--x:80.3%;--y:72%"></div>
+      <div class="slot" style="--x:89.2%;--y:72%"></div>
+
+      <div class="ghost" data-sx="8"  data-sy="78" data-m="a4aa" style="--x:62.5%;--y:61%"><i>A4AA</i></div>
+      <div class="ghost" data-sx="14" data-sy="66" data-m="a4mp" style="--x:71.4%;--y:61%"><i>A4MP</i></div>
+      <div class="ghost" data-sx="22" data-sy="85" data-m="awp"  style="--x:80.3%;--y:61%"><i>AwP</i></div>
+      <div class="ghost" data-sx="30" data-sy="68" data-m="va"   style="--x:89.2%;--y:61%"><i>VA</i></div>
+      <div class="ghost" data-sx="37" data-sy="86" data-m="ahe"  style="--x:62.5%;--y:72%"><i>AHE</i></div>
+      <div class="ghost" data-sx="44" data-sy="68" data-m="aor"  style="--x:71.4%;--y:72%"><i>AOR</i></div>
+      <div class="ghost" data-sx="52" data-sy="88" data-m="aca"  style="--x:80.3%;--y:72%"><i>ACA</i></div>
+      <div class="ghost" data-sx="56" data-sy="73" data-m="cl"   style="--x:89.2%;--y:72%"><i>CL</i></div>
+
+      <div class="hero-copy ov">
+        <h1 class="hw">SILVER<span class="boom">BOOM</span></h1>
+        <p class="statement">Where the silver bullet lands.</p>
+        <p class="support">One matrix registers, governs and ships every shared crate — adapters, runtimes, hooks and credentials — so dozens of tools stay one system.</p>
+        <div class="hero-btns">
+          <a class="btn solid" href="#rack">Open the rack</a>
+          <a class="btn line" href="https://github.com/Unka-Malloc" rel="noopener">github.com/Unka-Malloc</a>
+        </div>
+      </div>
+
+      <div class="m-rack" aria-hidden="true">
+        <span>A4AA</span><span>A4MP</span><span>AwP</span><span>VA</span>
+        <span>AHE</span><span>AOR</span><span>ACA</span><span>CL</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ rack ============ -->
+  <section class="wrap block" id="rack">
+    <p class="tag">01 · THE ARMORY</p>
+    <h2>The rack</h2>
+    <p class="cap">Eight members, each stamped. Pick a round.</p>
+    <div class="rack" role="listbox" aria-label="Matrix members">
+      <button class="round" data-m="a4aa" role="option"><i>A4AA</i></button>
+      <button class="round" data-m="a4mp" role="option"><i>A4MP</i></button>
+      <button class="round" data-m="awp"  role="option"><i>AwP</i></button>
+      <button class="round" data-m="va"   role="option"><i>VA</i></button>
+      <button class="round" data-m="ahe"  role="option"><i>AHE</i></button>
+      <button class="round" data-m="aor"  role="option"><i>AOR</i></button>
+      <button class="round" data-m="aca"  role="option"><i>ACA</i></button>
+      <button class="round" data-m="cl"   role="option"><i>CL</i></button>
+    </div>
+    <div class="dossier" id="dossier" aria-live="polite">
+      <div class="d-code" id="d-code">A4AA</div>
+      <div class="d-main">
+        <h3 id="d-name">Adapter For All Agents</h3>
+        <p class="d-role" id="d-role"></p>
+        <div class="d-chips" id="d-chips"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ stack ============ -->
+  <section class="wrap block" id="stack">
+    <p class="tag">02 · ARCHITECTURE</p>
+    <h2>Two directions, one matrix</h2>
+    <p class="cap">Bottom-up lifts what agents natively offer. Top-down projects what the runtime demands. The rails serve both.</p>
+    <div class="axes">
+      <div class="axis">
+        <div class="axis-tag">BOTTOM-UP · THE AGENT IS MAXIMAL</div>
+        <div class="axis-stack">
+          <div class="band" data-m="va"><b>VA</b><span>custody &amp; facade</span></div>
+          <div class="band" data-m="awp"><b>AwP</b><span>profiles</span></div>
+          <div class="band" data-m="a4aa"><b>A4AA</b><span>agent adaptation</span></div>
+          <div class="band dock" data-m="ahe"><b>AHE</b><span>hooks · an A4AA capability</span></div>
+        </div>
+        <p class="axis-note">Agents speak natively; the stack lifts their capability upward.</p>
+      </div>
+      <div class="axis">
+        <div class="axis-tag">TOP-DOWN · THE LANGUAGE IS MAXIMAL</div>
+        <div class="axis-stack">
+          <div class="band" data-m="aca"><b>ACA</b><span>collaboration runtime</span></div>
+          <div class="band" data-m="aor"><b>AOR</b><span>process gates</span></div>
+        </div>
+        <p class="axis-note">Gates and strategies define full semantics; hosts project the subset they can express.</p>
+      </div>
+      <div class="rails">
+        <div class="rail" data-m="a4mp"><b>A4MP</b><span>provider adaptation</span></div>
+        <div class="rail" data-m="cl"><b>CL</b><span>credential custody</span></div>
+        <div class="rail next"><b>…</b><span>reserved for the next member</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ origin ============ -->
+  <section class="wrap block" id="origin">
+    <p class="tag">03 · FIELD NOTES</p>
+    <h2>Cast in silver</h2>
+    <div class="notes">
+      <div class="note"><span class="k">MYTH</span><p>Brooks said there is no silver bullet. We're not the bullet — we're the boom.</p></div>
+      <div class="note"><span class="k">CADENCE</span><p>Every member ships on the same weekly train — Fridays, Shanghai time.</p></div>
+      <div class="note"><span class="k">DISCIPLINE</span><p>Adapters are Apache-2.0. Runtimes are AGPL-3.0. One rule, no exceptions.</p></div>
+      <div class="note"><span class="k">REGISTRY</span><p>Eight rounds loaded. The magazine is rated for dozens.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <a class="lockup small" href="#top"><svg viewBox="0 0 20 28" aria-hidden="true"><path class="lk-body" d="M10 1 C4.8 1 3 5.5 3 9.5 V21 a2 2 0 0 0 2 2 h10 a2 2 0 0 0 2-2 V9.5 C17 5.5 15.2 1 10 1 Z"/><rect class="lk-primer" x="3" y="17" width="14" height="6" rx="2"/></svg><span>SILVERBOOM</span></a>
+  <p>silverboom.dev · the agent-infrastructure matrix · <a href="https://github.com/Unka-Malloc" rel="noopener">github.com/Unka-Malloc</a></p>
+</footer>
+
+<script src="/site.js"></script>
+</body>
+</html>

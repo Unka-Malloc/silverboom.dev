@@ -1,0 +1,28 @@
+# OS and editor noise
+.DS_Store
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+
+# Local tool state and build output
+.playwright-cli/
+build/
+build-*/
+dist/
+out/
+coverage/
+.cache/
+*.log
+*.tmp
+tmp/
+
+# Local plans and reports
+docs/plans/
+docs/reports/
+
+# Secrets
+.env
+.env.*
+!.env.example
