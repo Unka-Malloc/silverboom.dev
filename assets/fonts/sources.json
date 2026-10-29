@@ -1,0 +1,12 @@
+{
+  "family": "Albert Sans",
+  "designer": "Mikko Poyhonen",
+  "license": "SIL Open Font License 1.1",
+  "source": "https://fonts.google.com/specimen/Albert+Sans",
+  "files": {
+    "AlbertSans-Regular.ttf": "https://fonts.gstatic.com/s/albertsans/v4/i7dZIFdwYjGaAMFtZd_QA3xXSKZqhr-TenSHq5P_rA.ttf",
+    "AlbertSans-Semibold.ttf": "https://fonts.gstatic.com/s/albertsans/v4/i7dZIFdwYjGaAMFtZd_QA3xXSKZqhr-TenSHdZT_rA.ttf",
+    "AlbertSans-Extrabold.ttf": "https://fonts.gstatic.com/s/albertsans/v4/i7dZIFdwYjGaAMFtZd_QA3xXSKZqhr-TenSHK5T_rA.ttf",
+    "OFL.txt": "https://raw.githubusercontent.com/google/fonts/main/ofl/albertsans/OFL.txt"
+  }
+}

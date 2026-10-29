@@ -1,169 +1,182 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-style="industrial">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Silverboom — the agent-infrastructure matrix</title>
-<meta name="description" content="One matrix that registers, governs and ships the shared agent-infrastructure crates: A4AA, A4MP, AwP, VA, AHE, AOR, Acativa and CL.">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/site.css">
-<script>document.documentElement.classList.add('js')</script>
+<meta name="theme-color" content="#f3f5f7">
+<title>BOOM! — Agent infrastructure, assembled</title>
+<meta name="description" content="Eight projects for agent adaptation, profiles, collaboration, process gates and credential custody. Explore the Silverboom infrastructure.">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="preload" href="./assets/fonts/AlbertSans-Extrabold.ttf" as="font" type="font/ttf" crossorigin>
+<style>/* OD-LAYOUT-PRIMITIVES v1 — structure only: display, flex/grid, overflow, wrapping, ratio, geometry.
+   Put this @layer first; product CSS outside the layer wins ordinary layout rules.
+   Native hidden and closed-dialog states take precedence over component display rules. */
+@layer od-layout {
+  [hidden]:not([hidden="until-found" i]) { display: none !important; }
+  dialog:not([open]) { display: none !important; }
+
+  :where(.od-stack,.od-row,.od-row-top,.od-cluster,.od-grid,.od-field,.od-stat,.od-cell,.od-tile) > :where(*) { min-width: 0; }
+
+  /* containers */
+  .od-stack   { display: flex; flex-direction: column; gap: var(--od-gap, 8px); }
+  .od-row     { display: flex; align-items: center; gap: var(--od-gap, 8px); }
+  .od-row-top { display: flex; align-items: flex-start; gap: var(--od-gap, 8px); }
+  .od-cluster { display: flex; flex-wrap: wrap; align-items: center; gap: var(--od-gap, 8px); }
+  .od-fill    { flex: 1 1 0; min-width: 0; }
+  .od-fixed   { flex: none; }
+  .od-grid    { display: grid; gap: var(--od-gap, 12px); grid-template-columns: repeat(var(--od-cols, 3), minmax(0, 1fr)); }
+
+  /* stacked information: each piece is its own line — never sibling inline spans */
+  .od-stat, .od-field, .od-cell { display: grid; gap: var(--od-gap, 2px); }
+  :where(.od-stat,.od-field,.od-cell) > :where(*) { display: block; }
+  .od-tile { display: grid; grid-template-rows: auto 1fr; }
+  :where(.od-tile) > :where(*) { display: block; }
+
+  /* media keeps its intrinsic ratio by default; never a distorted or cropped
+     cover by accident. height:auto lets the ratio win over an <img height="…">
+     attribute. Cropping to a uniform box is an explicit opt-in: set --od-ratio
+     AND add .od-media-cover together (per the core rule, only where a crop is
+     deliberate — tile thumbs, decorative fills — never on full-frame content). */
+  .od-media { display: block; width: 100%; height: auto; aspect-ratio: var(--od-ratio, auto); }
+  .od-media-cover { object-fit: cover; }
+
+  /* functional inline SVG icons opt into bounded geometry; content SVGs keep their own */
+  .od-icon { display: inline-block; inline-size: var(--od-icon-size, 1em); block-size: var(--od-icon-size, 1em); flex: none; }
+
+  /* data text only — authored copy is rewritten to its budget instead */
+  .od-truncate { display: block; max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .od-clamp-2, .od-clamp-3 { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+  .od-clamp-2 { -webkit-line-clamp: 2; }
+  .od-clamp-3 { -webkit-line-clamp: 3; }
+  .od-lines-2 { min-height: calc(2 * 1.4em); }   /* block-level reservation for a shared baseline */
+  .od-nowrap  { white-space: nowrap; }           /* 数字+单位 · 价格+起 · 日期+星期 */
+  .od-keep    { word-break: keep-all; overflow-wrap: anywhere; } /* CJK labels break at spaces / <wbr> first */
+
+  /* screen skeleton (optional): bars take their own space, the middle scrolls — no padding guessed for chrome */
+  .od-screen { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; height: 100%; }
+  .od-scroll { overflow-y: auto; overscroll-behavior: contain; min-height: 0; }
+
+  /* horizontal rail: the next item peeks at the edge; trailing room survives overflow */
+  .od-rail { display: flex; gap: var(--od-gap, 8px); overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none;
+             padding-inline: var(--od-rail-pad, 16px); scroll-padding-inline: var(--od-rail-pad, 16px); }
+  .od-rail::-webkit-scrollbar { display: none; }
+  :where(.od-rail) > :where(*) { flex: none; scroll-snap-align: start; }
+  :where(.od-rail) > :where(:last-child) { margin-inline-end: var(--od-rail-pad, 16px); }
+
+  .od-spacer { flex: none; visibility: hidden; pointer-events: none; }
+  .od-touch  { min-width: 44px; min-height: 44px; }
+}
+:root [hidden]:where(:not([hidden="until-found" i])) { display: none; }
+/* /OD-LAYOUT-PRIMITIVES v1 */
+</style>
+<script>
+(() => {
+  let preference = 'system';
+  try {
+    const saved = localStorage.getItem('boom-color-mode');
+    if (['system', 'light', 'dark'].includes(saved)) preference = saved;
+  } catch (_) {}
+  const dark = preference === 'dark' || (preference === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.dataset.themePreference = preference;
+  document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+})();
+</script>
+<link rel="stylesheet" href="./site.css?v=map-connections-3">
+<script src="./site.js?v=map-connections-3" defer></script>
 </head>
-<body>
-
-<header class="site-header">
-  <a class="lockup" href="#top" aria-label="Silverboom">
-    <svg viewBox="0 0 20 28" aria-hidden="true"><path class="lk-body" d="M10 1 C4.8 1 3 5.5 3 9.5 V21 a2 2 0 0 0 2 2 h10 a2 2 0 0 0 2-2 V9.5 C17 5.5 15.2 1 10 1 Z"/><rect class="lk-primer" x="3" y="17" width="14" height="6" rx="2"/></svg>
-    <span>SILVERBOOM</span>
-  </a>
-  <nav class="site-nav">
-    <a href="#rack">Rack</a>
-    <a href="#stack">Stack</a>
-    <a href="#origin">Origin</a>
-    <a href="https://github.com/Unka-Malloc" rel="noopener">GitHub</a>
-  </nav>
-</header>
-
-<main>
-  <!-- ============ hero ============ -->
-  <section class="hero" id="top">
-    <div class="stage">
-      <svg class="scene-svg" viewBox="0 0 1440 820" preserveAspectRatio="none" aria-hidden="true">
-        <defs>
-          <linearGradient id="bulletGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#eef0f3"/><stop offset=".45" stop-color="#c7ccd3"/>
-            <stop offset=".75" stop-color="#8f98a1"/><stop offset="1" stop-color="#6b747e"/>
-          </linearGradient>
-        </defs>
-        <path class="traj" d="M -60 790 Q 400 720 740 540 T 1095 300 L 1530 80" />
-        <g class="target" transform="translate(1095 300)">
-          <circle r="158"/><circle r="110"/><circle r="62"/>
-          <path d="M -190 0 H -158 M 158 0 H 190 M 0 -190 V -158 M 0 158 V 190"/>
-          <circle class="bull" r="10"/>
-        </g>
-        <circle class="flash" cx="1095" cy="300" r="0"/>
-        <g class="bullet"><rect x="-34" y="-9" width="56" height="18" rx="9"/><rect class="primer" x="14" y="-9" width="12" height="18" rx="5"/></g>
-      </svg>
-
-      <span class="scar" style="--x:8%;--y:78%">A4AA</span>
-      <span class="scar" style="--x:14%;--y:66%">A4MP</span>
-      <span class="scar" style="--x:22%;--y:85%">AwP</span>
-      <span class="scar" style="--x:30%;--y:68%">VA</span>
-      <span class="scar" style="--x:37%;--y:86%">AHE</span>
-      <span class="scar" style="--x:44%;--y:68%">AOR</span>
-      <span class="scar" style="--x:52%;--y:88%">ACA</span>
-      <span class="scar" style="--x:56%;--y:73%">CL</span>
-
-      <div class="slot" style="--x:62.5%;--y:61%"></div>
-      <div class="slot" style="--x:71.4%;--y:61%"></div>
-      <div class="slot" style="--x:80.3%;--y:61%"></div>
-      <div class="slot" style="--x:89.2%;--y:61%"></div>
-      <div class="slot" style="--x:62.5%;--y:72%"></div>
-      <div class="slot" style="--x:71.4%;--y:72%"></div>
-      <div class="slot" style="--x:80.3%;--y:72%"></div>
-      <div class="slot" style="--x:89.2%;--y:72%"></div>
-
-      <div class="ghost" data-sx="8"  data-sy="78" data-m="a4aa" style="--x:62.5%;--y:61%"><i>A4AA</i></div>
-      <div class="ghost" data-sx="14" data-sy="66" data-m="a4mp" style="--x:71.4%;--y:61%"><i>A4MP</i></div>
-      <div class="ghost" data-sx="22" data-sy="85" data-m="awp"  style="--x:80.3%;--y:61%"><i>AwP</i></div>
-      <div class="ghost" data-sx="30" data-sy="68" data-m="va"   style="--x:89.2%;--y:61%"><i>VA</i></div>
-      <div class="ghost" data-sx="37" data-sy="86" data-m="ahe"  style="--x:62.5%;--y:72%"><i>AHE</i></div>
-      <div class="ghost" data-sx="44" data-sy="68" data-m="aor"  style="--x:71.4%;--y:72%"><i>AOR</i></div>
-      <div class="ghost" data-sx="52" data-sy="88" data-m="aca"  style="--x:80.3%;--y:72%"><i>ACA</i></div>
-      <div class="ghost" data-sx="56" data-sy="73" data-m="cl"   style="--x:89.2%;--y:72%"><i>CL</i></div>
-
-      <div class="hero-copy ov">
-        <h1 class="hw">SILVER<span class="boom">BOOM</span></h1>
-        <p class="statement">Where the silver bullet lands.</p>
-        <p class="support">One matrix registers, governs and ships every shared crate — adapters, runtimes, hooks and credentials — so dozens of tools stay one system.</p>
-        <div class="hero-btns">
-          <a class="btn solid" href="#rack">Open the rack</a>
-          <a class="btn line" href="https://github.com/Unka-Malloc" rel="noopener">github.com/Unka-Malloc</a>
-        </div>
-      </div>
-
-      <div class="m-rack" aria-hidden="true">
-        <span>A4AA</span><span>A4MP</span><span>AwP</span><span>VA</span>
-        <span>AHE</span><span>AOR</span><span>ACA</span><span>CL</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ rack ============ -->
-  <section class="wrap block" id="rack">
-    <p class="tag">01 · THE ARMORY</p>
-    <h2>The rack</h2>
-    <p class="cap">Eight members, each stamped. Pick a round.</p>
-    <div class="rack" role="listbox" aria-label="Matrix members">
-      <button class="round" data-m="a4aa" role="option"><i>A4AA</i></button>
-      <button class="round" data-m="a4mp" role="option"><i>A4MP</i></button>
-      <button class="round" data-m="awp"  role="option"><i>AwP</i></button>
-      <button class="round" data-m="va"   role="option"><i>VA</i></button>
-      <button class="round" data-m="ahe"  role="option"><i>AHE</i></button>
-      <button class="round" data-m="aor"  role="option"><i>AOR</i></button>
-      <button class="round" data-m="aca"  role="option"><i>ACA</i></button>
-      <button class="round" data-m="cl"   role="option"><i>CL</i></button>
-    </div>
-    <div class="dossier" id="dossier" aria-live="polite">
-      <div class="d-code" id="d-code">A4AA</div>
-      <div class="d-main">
-        <h3 id="d-name">Adapter For All Agents</h3>
-        <p class="d-role" id="d-role"></p>
-        <div class="d-chips" id="d-chips"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ stack ============ -->
-  <section class="wrap block" id="stack">
-    <p class="tag">02 · ARCHITECTURE</p>
-    <h2>Two directions, one matrix</h2>
-    <p class="cap">Bottom-up lifts what agents natively offer. Top-down projects what the runtime demands. The rails serve both.</p>
-    <div class="axes">
-      <div class="axis">
-        <div class="axis-tag">BOTTOM-UP · THE AGENT IS MAXIMAL</div>
-        <div class="axis-stack">
-          <div class="band" data-m="va"><b>VA</b><span>custody &amp; facade</span></div>
-          <div class="band" data-m="awp"><b>AwP</b><span>profiles</span></div>
-          <div class="band" data-m="a4aa"><b>A4AA</b><span>agent adaptation</span></div>
-          <div class="band dock" data-m="ahe"><b>AHE</b><span>hooks · an A4AA capability</span></div>
-        </div>
-        <p class="axis-note">Agents speak natively; the stack lifts their capability upward.</p>
-      </div>
-      <div class="axis">
-        <div class="axis-tag">TOP-DOWN · THE LANGUAGE IS MAXIMAL</div>
-        <div class="axis-stack">
-          <div class="band" data-m="aca"><b>ACA</b><span>collaboration runtime</span></div>
-          <div class="band" data-m="aor"><b>AOR</b><span>process gates</span></div>
-        </div>
-        <p class="axis-note">Gates and strategies define full semantics; hosts project the subset they can express.</p>
-      </div>
-      <div class="rails">
-        <div class="rail" data-m="a4mp"><b>A4MP</b><span>provider adaptation</span></div>
-        <div class="rail" data-m="cl"><b>CL</b><span>credential custody</span></div>
-        <div class="rail next"><b>…</b><span>reserved for the next member</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ origin ============ -->
-  <section class="wrap block" id="origin">
-    <p class="tag">03 · FIELD NOTES</p>
-    <h2>Cast in silver</h2>
-    <div class="notes">
-      <div class="note"><span class="k">MYTH</span><p>Brooks said there is no silver bullet. We're not the bullet — we're the boom.</p></div>
-      <div class="note"><span class="k">CADENCE</span><p>Every member ships on the same weekly train — Fridays, Shanghai time.</p></div>
-      <div class="note"><span class="k">DISCIPLINE</span><p>Adapters are Apache-2.0. Runtimes are AGPL-3.0. One rule, no exceptions.</p></div>
-      <div class="note"><span class="k">REGISTRY</span><p>Eight rounds loaded. The magazine is rated for dozens.</p></div>
-    </div>
-  </section>
+<body id="top">
+<a class="skip-link" href="#main">Skip to content</a>
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
+<symbol id="icon-diagonal" viewBox="0 0 24 24"><path d="M6 18 18 6M6 6h12v12"/></symbol>
+<symbol id="icon-up" viewBox="0 0 24 24"><path d="M12 20V4m-6 6 6-6 6 6"/></symbol>
+<symbol id="icon-down" viewBox="0 0 24 24"><path d="M12 4v16m-6-6 6 6 6-6"/></symbol>
+<symbol id="icon-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="icon-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></symbol>
+<symbol id="icon-license" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6z"/><path d="m8 12 3 3 5-6"/></symbol>
+<symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+<symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></symbol>
+<symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5Z"/></symbol>
+<symbol id="icon-display" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M12 17v4m-4 0h8"/></symbol>
+</defs></svg>
+<aside class="demo-bar" aria-label="设计方案切换" lang="zh-CN" data-enhanced-only hidden>
+<div class="demo-label"><strong>BOOM! 银色提案</strong><span>选择一种表达</span></div>
+<div class="style-options" role="group" aria-label="选择设计风格">
+<button type="button" class="style-choice" data-style-choice="industrial" aria-pressed="true"><span class="style-swatch" aria-hidden="true"></span>精密工业风</button>
+<button type="button" class="style-choice" data-style-choice="editorial" aria-pressed="false"><span class="style-swatch" aria-hidden="true"></span>银色编辑风</button>
+<button type="button" class="style-choice" data-style-choice="nocturne" aria-pressed="false"><span class="style-swatch" aria-hidden="true"></span>深色金属风</button>
+</div>
+<label class="style-compact" for="style-select"><span>设计方案</span><select id="style-select"><option value="industrial">精密工业风</option><option value="editorial">银色编辑风</option><option value="nocturne">深色金属风</option></select></label>
+<div class="demo-palette" id="demo-palette" role="img" aria-label="雾白、铂银、石墨黑、冷蓝"><span></span><span></span><span></span><span></span></div>
+<p class="sr-only" id="style-status" role="status" aria-live="polite">当前方案：精密工业风，银色 BOOM! 标题</p>
+</aside>
+<header class="masthead frame"><a class="brand" href="#top" aria-label="BOOM! home">BOOM!</a><nav aria-label="Main navigation"><a href="#projects">Projects</a><a href="#architecture">Architecture</a><a class="nav-github" href="https://github.com/Unka-Malloc" target="_blank" rel="noopener noreferrer">GitHub<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></nav><label class="theme-control" id="theme-control" for="theme-choice" hidden><svg class="od-icon" aria-hidden="true"><use id="theme-icon" href="#icon-display"/></svg><span class="sr-only">Color appearance</span><select id="theme-choice"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label><span class="sr-only" id="theme-status" role="status" aria-live="polite"></span></header>
+<main id="main">
+<section class="hero frame" aria-labelledby="hero-title">
+<div class="hero-layout">
+<h1 class="wordmark" id="hero-title">BOOM!</h1>
+<div class="hero-copy"><h2>Agent infrastructure,<br>assembled.</h2><p>Eight projects for the way agents connect, run and work together.</p><a class="button" href="#projects">Explore projects<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div>
+<figure class="assembly" aria-label="Interactive infrastructure map">
+<div class="network">
+<div class="map-lanes">
+<div class="map-lane is-current" data-map-layer="agent"><p class="map-label"><span>Agent layer</span><svg class="od-icon " aria-hidden="true"><use href="#icon-up"/></svg></p><div class="map-chain"><button class="map-node" type="button" data-select-project="va" aria-pressed="false" aria-label="Select Virtual Agent" style="--i:0"><span class="node-code">VA</span><span class="node-job">Profile registry</span><svg class="od-icon selected-icon" aria-hidden="true"><use href="#icon-check"/></svg></button><button class="map-node" type="button" data-select-project="awp" aria-pressed="false" aria-label="Select Agents With Profiles" style="--i:1"><span class="node-code">AwP</span><span class="node-job">Agent profiles</span><svg class="od-icon selected-icon" aria-hidden="true"><use href="#icon-check"/></svg></button><button class="map-node is-selected" type="button" data-select-project="a4aa" aria-pressed="true" aria-label="Select Adapter For All Agents" style="--i:2"><span class="node-code">A4AA</span><span class="node-job">Agent adapters</span><svg class="od-icon selected-icon" aria-hidden="true"><use href="#icon-check"/></svg></button><button class="map-node" type="button" data-select-project="ahe" aria-pressed="false" aria-label="Select Agent Hook Engine" style="--i:3"><span class="node-code">AHE</span><span class="node-job">Lifecycle hooks</span><svg class="od-icon selected-icon" aria-hidden="true"><use href="#icon-check"/></svg></button></div></div>
+<div class="map-lane map-runtime" data-map-layer="runtime"><p class="map-label"><span>Runtime layer</span><svg class="od-icon " aria-hidden="true"><use href="#icon-down"/></svg></p><div class="map-chain"><button class="map-node" type="button" data-select-project="aca" aria-pressed="false" aria-label="Select Acativa" style="--i:4"><span class="node-code">ACA</span><span class="node-job">Collaboration</span><svg class="od-icon selected-icon" aria-hidden="true"><use href="#icon-check"/></svg></button><button class="map-node" type="button" data-select-project="aor" aria-pressed="false" aria-label="Select AgentOps-Runtime" style="--i:5"><span class="node-code">AOR</span><span class="node-job">Process gates</span><svg class="od-icon selected-icon" aria-hidden="true"><use href="#icon-check"/></svg></button></div></div>
+</div>
+<div class="map-bridge-space" aria-hidden="true"></div>
+<svg class="map-bridge" aria-hidden="true"><path class="map-connections" d=""/></svg>
+<p class="map-label map-shared-label">Shared infrastructure</p>
+<div class="map-foundation" data-map-layer="shared" aria-label="Shared infrastructure"><button class="map-node" type="button" data-select-project="a4mp" aria-pressed="false" aria-label="Select Adapters For Model Providers" style="--i:6"><span class="node-code">A4MP</span><span class="node-job">Model providers</span><svg class="od-icon selected-icon" aria-hidden="true"><use href="#icon-check"/></svg></button><button class="map-node" type="button" data-select-project="cl" aria-pressed="false" aria-label="Select Credential-Lease" style="--i:7"><span class="node-code">CL</span><span class="node-job">Credential leases</span><svg class="od-icon selected-icon" aria-hidden="true"><use href="#icon-check"/></svg></button></div>
+</div>
+<figcaption class="network-caption"><p aria-live="polite"><strong id="map-selected">A4AA</strong> · <span id="map-role">Agent adaptation</span></p><a class="text-link" href="#project-a4aa" data-view-selected>View project<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></figcaption>
+</figure>
+</div>
+<div class="hero-foot"><p>Independent projects. A shared foundation.</p><nav aria-label="Explore the foundation"><a href="#projects">The projects<svg class="od-icon " aria-hidden="true"><use href="#icon-down"/></svg></a><a href="#architecture">How they connect<svg class="od-icon " aria-hidden="true"><use href="#icon-down"/></svg></a></nav></div>
+</section>
+<section class="projects-section" id="projects" aria-labelledby="projects-title"><div class="frame">
+<div class="section-heading"><h2 id="projects-title">Find your<br>starting point.</h2><p>Each project owns a clear responsibility. Choose the capability your next build needs.</p></div>
+<div class="directory-toolbar" data-enhanced-only hidden>
+<div class="filter-group" role="group" aria-label="Filter projects by layer"><button class="filter-button" type="button" data-filter="all" aria-pressed="true">All projects<span class="filter-count">8</span></button><button class="filter-button" type="button" data-filter="agent" aria-pressed="false">Agent<span class="filter-count">4</span></button><button class="filter-button" type="button" data-filter="runtime" aria-pressed="false">Runtime<span class="filter-count">2</span></button><button class="filter-button" type="button" data-filter="shared" aria-pressed="false">Shared<span class="filter-count">2</span></button></div>
+<div class="search-field"><label for="project-search">Find a project</label><div class="search-input"><svg class="od-icon " aria-hidden="true"><use href="#icon-search"/></svg><input id="project-search" type="search" placeholder="Name or capability" autocomplete="off" spellcheck="false" aria-controls="project-list"></div></div>
+</div>
+<p class="results-status" id="results-count" role="status" aria-live="polite">8 projects</p>
+<div class="project-list" id="project-list"><details class="project" id="project-a4aa" data-project-row="a4aa" open>
+<summary><span class="project-code">A4AA</span><span class="project-heading od-field"><strong>Adapter For All Agents</strong><span class="project-short">Agent adaptation</span></span><span class="project-layer">Agent layer</span><svg class="od-icon expand-icon" aria-hidden="true"><use href="#icon-plus"/></svg></summary>
+<div class="project-detail"><span class="project-scope">Agent layer</span><div><p>Adapts agent clients across ACP, RPC, CLI and serve lanes, with process supervision and one common facade.</p><div class="project-meta"><span>Rust crate</span><span class="license"><svg class="od-icon " aria-hidden="true"><use href="#icon-license"/></svg>Apache-2.0</span><a class="text-link" href="https://github.com/Unka-Malloc/Adapters-for-All-Agents" target="_blank" rel="noopener noreferrer" aria-label="Open Adapter For All Agents on GitHub">View repository<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div></div></div>
+</details><details class="project" id="project-a4mp" data-project-row="a4mp">
+<summary><span class="project-code">A4MP</span><span class="project-heading od-field"><strong>Adapters For Model Providers</strong><span class="project-short">Model-provider access</span></span><span class="project-layer">Shared infrastructure</span><svg class="od-icon expand-icon" aria-hidden="true"><use href="#icon-plus"/></svg></summary>
+<div class="project-detail"><span class="project-scope">Shared infrastructure</span><div><p>Connects model providers through the access modes they actually support. SDK first, with an optional wire bridge.</p><div class="project-meta"><span>Rust crate</span><span class="license"><svg class="od-icon " aria-hidden="true"><use href="#icon-license"/></svg>Apache-2.0</span><a class="text-link" href="https://github.com/Unka-Malloc/Adapters-For-Model-Providers" target="_blank" rel="noopener noreferrer" aria-label="Open Adapters For Model Providers on GitHub">View repository<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div></div></div>
+</details><details class="project" id="project-awp" data-project-row="awp">
+<summary><span class="project-code">AwP</span><span class="project-heading od-field"><strong>Agents With Profiles</strong><span class="project-short">Configurable agent profiles</span></span><span class="project-layer">Agent layer</span><svg class="od-icon expand-icon" aria-hidden="true"><use href="#icon-plus"/></svg></summary>
+<div class="project-detail"><span class="project-scope">Agent layer</span><div><p>Turns one base agent into multiple virtual agents through profiles for the model, persona, environment and dispatch.</p><div class="project-meta"><span>Rust crate</span><span class="license"><svg class="od-icon " aria-hidden="true"><use href="#icon-license"/></svg>Apache-2.0</span><a class="text-link" href="https://github.com/Unka-Malloc/Agents-with-Profiles" target="_blank" rel="noopener noreferrer" aria-label="Open Agents With Profiles on GitHub">View repository<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div></div></div>
+</details><details class="project" id="project-va" data-project-row="va">
+<summary><span class="project-code">VA</span><span class="project-heading od-field"><strong>Virtual Agent</strong><span class="project-short">Profile registry and custody</span></span><span class="project-layer">Agent layer</span><svg class="od-icon expand-icon" aria-hidden="true"><use href="#icon-plus"/></svg></summary>
+<div class="project-detail"><span class="project-scope">Agent layer</span><div><p>Provides a canonical registry for agent profiles. Save, edit, restore and share them through a CLI.</p><div class="project-meta"><span>Rust crate</span><span class="license"><svg class="od-icon " aria-hidden="true"><use href="#icon-license"/></svg>Apache-2.0</span><a class="text-link" href="https://github.com/Unka-Malloc/Virtual-Agent" target="_blank" rel="noopener noreferrer" aria-label="Open Virtual Agent on GitHub">View repository<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div></div></div>
+</details><details class="project" id="project-ahe" data-project-row="ahe">
+<summary><span class="project-code">AHE</span><span class="project-heading od-field"><strong>Agent Hook Engine</strong><span class="project-short">Agent lifecycle hooks</span></span><span class="project-layer">Agent layer</span><svg class="od-icon expand-icon" aria-hidden="true"><use href="#icon-plus"/></svg></summary>
+<div class="project-detail"><span class="project-scope">Agent layer</span><div><p>Expresses lifecycle hooks as a DSL, then adapts those primitives to the capabilities of each agent harness.</p><div class="project-meta"><span>Rust crate</span><span class="license"><svg class="od-icon " aria-hidden="true"><use href="#icon-license"/></svg>Apache-2.0</span><a class="text-link" href="https://github.com/Unka-Malloc/Agent-Hook-Engine" target="_blank" rel="noopener noreferrer" aria-label="Open Agent Hook Engine on GitHub">View repository<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div></div></div>
+</details><details class="project" id="project-aor" data-project-row="aor">
+<summary><span class="project-code">AOR</span><span class="project-heading od-field"><strong>AgentOps-Runtime</strong><span class="project-short">Development process gates</span></span><span class="project-layer">Runtime layer</span><svg class="od-icon expand-icon" aria-hidden="true"><use href="#icon-plus"/></svg></summary>
+<div class="project-detail"><span class="project-scope">Runtime layer</span><div><p>Models development pipelines as registered gates, with seven failure-mode mechanisms and one mechanism per crate.</p><div class="project-meta"><span>Rust crate</span><span class="license"><svg class="od-icon " aria-hidden="true"><use href="#icon-license"/></svg>AGPL-3.0</span><a class="text-link" href="https://github.com/Unka-Malloc/AgentOps-Runtime" target="_blank" rel="noopener noreferrer" aria-label="Open AgentOps-Runtime on GitHub">View repository<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div></div></div>
+</details><details class="project" id="project-aca" data-project-row="aca">
+<summary><span class="project-code">ACA</span><span class="project-heading od-field"><strong>Acativa</strong><span class="project-short">Multi-agent collaboration</span></span><span class="project-layer">Runtime layer</span><svg class="od-icon expand-icon" aria-hidden="true"><use href="#icon-plus"/></svg></summary>
+<div class="project-detail"><span class="project-scope">Runtime layer</span><div><p>Compiles multi-agent collaboration strategies into immutable plans and executes them as durable state machines.</p><div class="project-meta"><span>Rust crate</span><span class="license"><svg class="od-icon " aria-hidden="true"><use href="#icon-license"/></svg>AGPL-3.0</span><a class="text-link" href="https://github.com/Unka-Malloc/Acativa" target="_blank" rel="noopener noreferrer" aria-label="Open Acativa on GitHub">View repository<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div></div></div>
+</details><details class="project" id="project-cl" data-project-row="cl">
+<summary><span class="project-code">CL</span><span class="project-heading od-field"><strong>Credential-Lease</strong><span class="project-short">Process-bound credential leases</span></span><span class="project-layer">Shared infrastructure</span><svg class="od-icon expand-icon" aria-hidden="true"><use href="#icon-plus"/></svg></summary>
+<div class="project-detail"><span class="project-scope">Shared infrastructure</span><div><p>Issues process-bound, time-limited, revocable credential leases while keeping credential custody outside the runtime.</p><div class="project-meta"><span>Rust crate</span><span class="license"><svg class="od-icon " aria-hidden="true"><use href="#icon-license"/></svg>Apache-2.0</span><a class="text-link" href="https://github.com/Unka-Malloc/Credential-Lease" target="_blank" rel="noopener noreferrer" aria-label="Open Credential-Lease on GitHub">View repository<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div></div></div>
+</details></div>
+<div class="empty-state" id="empty-state" hidden><h3>No matching projects</h3><p>Try another name or explore all eight projects.</p><button class="button" id="clear-filters" type="button">Clear filters</button></div>
+<noscript><p class="no-script-note">Open a project to read its details. Enable JavaScript to switch design directions, search and explore the map.</p></noscript>
+</div></section>
+<section class="architecture-section" id="architecture" aria-labelledby="architecture-title"><div class="frame">
+<div class="section-heading"><h2 id="architecture-title">Two directions.<br>Common ground.</h2><p>Lift the capabilities agents already have. Project the semantics your runtime needs.</p></div>
+<div class="architecture-grid">
+<div class="architecture-direction"><svg class="direction-art" viewBox="0 0 104 104" aria-hidden="true"><path d="M40 100V45L17 68 0 51 52 0l52 51-17 17-23-23v55z"/></svg><h3>Build from<br>the agent.</h3><p>Keep native capabilities intact. Adapt agents, define profiles and bring them into a shared registry. Lifecycle hooks extend the adaptation layer.</p><div class="architecture-members" role="group" aria-label="Agent layer projects"><button type="button" class="is-selected" data-select-project="a4aa" aria-pressed="true" aria-label="Select Adapter For All Agents">A4AA</button><button type="button" class="" data-select-project="awp" aria-pressed="false" aria-label="Select Agents With Profiles">AwP</button><button type="button" class="" data-select-project="va" aria-pressed="false" aria-label="Select Virtual Agent">VA</button><button type="button" class="" data-select-project="ahe" aria-pressed="false" aria-label="Select Agent Hook Engine">AHE</button></div></div>
+<div class="architecture-direction"><svg class="direction-art" viewBox="0 0 104 104" aria-hidden="true"><path d="M40 4v55L17 36 0 53l52 51 52-51-17-17-23 23V4z"/></svg><h3>Start with<br>the strategy.</h3><p>Define collaboration and process semantics first. Each host expresses the part its runtime can support, from registered gates to durable execution.</p><div class="architecture-members" role="group" aria-label="Runtime layer projects"><button type="button" class="" data-select-project="aca" aria-pressed="false" aria-label="Select Acativa">ACA</button><button type="button" class="" data-select-project="aor" aria-pressed="false" aria-label="Select AgentOps-Runtime">AOR</button></div></div>
+</div>
+<div class="shared-infrastructure" role="group" aria-label="Infrastructure shared by both directions"><button class="shared-project" type="button" data-select-project="a4mp" aria-pressed="false"><strong>A4MP</strong><span class="od-field"><strong>Model-provider access</strong><span>A shared provider foundation</span></span></button><button class="shared-project" type="button" data-select-project="cl" aria-pressed="false"><strong>CL</strong><span class="od-field"><strong>Credential custody</strong><span>Leases bound to the process</span></span></button></div>
+<div class="architecture-selection" id="architecture-selection" aria-live="polite" aria-atomic="true"><div><h4 id="architecture-name">Adapter For All Agents</h4><p class="layer-context" id="architecture-layer">Agent layer</p></div><div><p class="selection-copy" id="architecture-description">Adapts agent clients across ACP, RPC, CLI and serve lanes, with process supervision and one common facade.</p><a class="text-link" id="architecture-repo" href="https://github.com/Unka-Malloc/Adapters-for-All-Agents" target="_blank" rel="noopener noreferrer">View repository<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div></div>
+</div></section>
 </main>
-
-<footer class="site-footer">
-  <a class="lockup small" href="#top"><svg viewBox="0 0 20 28" aria-hidden="true"><path class="lk-body" d="M10 1 C4.8 1 3 5.5 3 9.5 V21 a2 2 0 0 0 2 2 h10 a2 2 0 0 0 2-2 V9.5 C17 5.5 15.2 1 10 1 Z"/><rect class="lk-primer" x="3" y="17" width="14" height="6" rx="2"/></svg><span>SILVERBOOM</span></a>
-  <p>silverboom.dev · the agent-infrastructure matrix · <a href="https://github.com/Unka-Malloc" rel="noopener">github.com/Unka-Malloc</a></p>
-</footer>
-
-<script src="/site.js"></script>
+<footer class="footer frame"><div class="footer-top"><h2>Start with<br>one project.</h2><a class="button" href="#projects">Explore projects<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div><div class="footer-bottom"><p>Agent infrastructure, together.</p><a href="https://github.com/Unka-Malloc" target="_blank" rel="noopener noreferrer">GitHub<svg class="od-icon " aria-hidden="true"><use href="#icon-diagonal"/></svg></a></div><p class="footer-wordmark" aria-hidden="true"><span>BOOM!</span></p></footer>
+<script type="application/json" id="project-data">[{"id": "a4aa", "code": "A4AA", "name": "Adapter For All Agents", "short": "Agent adaptation", "layer": "agent", "license": "Apache-2.0", "repo": "Adapters-for-All-Agents", "role": "Adapts agent clients across ACP, RPC, CLI and serve lanes, with process supervision and one common facade.", "url": "https://github.com/Unka-Malloc/Adapters-for-All-Agents"}, {"id": "a4mp", "code": "A4MP", "name": "Adapters For Model Providers", "short": "Model-provider access", "layer": "shared", "license": "Apache-2.0", "repo": "Adapters-For-Model-Providers", "role": "Connects model providers through the access modes they actually support. SDK first, with an optional wire bridge.", "url": "https://github.com/Unka-Malloc/Adapters-For-Model-Providers"}, {"id": "awp", "code": "AwP", "name": "Agents With Profiles", "short": "Configurable agent profiles", "layer": "agent", "license": "Apache-2.0", "repo": "Agents-with-Profiles", "role": "Turns one base agent into multiple virtual agents through profiles for the model, persona, environment and dispatch.", "url": "https://github.com/Unka-Malloc/Agents-with-Profiles"}, {"id": "va", "code": "VA", "name": "Virtual Agent", "short": "Profile registry and custody", "layer": "agent", "license": "Apache-2.0", "repo": "Virtual-Agent", "role": "Provides a canonical registry for agent profiles. Save, edit, restore and share them through a CLI.", "url": "https://github.com/Unka-Malloc/Virtual-Agent"}, {"id": "ahe", "code": "AHE", "name": "Agent Hook Engine", "short": "Agent lifecycle hooks", "layer": "agent", "license": "Apache-2.0", "repo": "Agent-Hook-Engine", "role": "Expresses lifecycle hooks as a DSL, then adapts those primitives to the capabilities of each agent harness.", "url": "https://github.com/Unka-Malloc/Agent-Hook-Engine"}, {"id": "aor", "code": "AOR", "name": "AgentOps-Runtime", "short": "Development process gates", "layer": "runtime", "license": "AGPL-3.0", "repo": "AgentOps-Runtime", "role": "Models development pipelines as registered gates, with seven failure-mode mechanisms and one mechanism per crate.", "url": "https://github.com/Unka-Malloc/AgentOps-Runtime"}, {"id": "aca", "code": "ACA", "name": "Acativa", "short": "Multi-agent collaboration", "layer": "runtime", "license": "AGPL-3.0", "repo": "Acativa", "role": "Compiles multi-agent collaboration strategies into immutable plans and executes them as durable state machines.", "url": "https://github.com/Unka-Malloc/Acativa"}, {"id": "cl", "code": "CL", "name": "Credential-Lease", "short": "Process-bound credential leases", "layer": "shared", "license": "Apache-2.0", "repo": "Credential-Lease", "role": "Issues process-bound, time-limited, revocable credential leases while keeping credential custody outside the runtime.", "url": "https://github.com/Unka-Malloc/Credential-Lease"}]</script>
 </body>
 </html>
