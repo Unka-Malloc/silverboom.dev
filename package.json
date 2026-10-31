@@ -1,0 +1,11 @@
+{
+  "name": "silverboom-dev",
+  "private": true,
+  "description": "Static source for silverboom.dev. Tests drive the rendered page in Chromium via Playwright.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
+}

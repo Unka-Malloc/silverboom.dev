@@ -1,0 +1,185 @@
+// @ts-check
+// Behavior scenarios for the silverboom.dev project-directory page,
+// exercised through the rendered DOM the way a visitor drives it.
+const { test, expect } = require("@playwright/test");
+
+const rows = "[data-project-row]";
+const group = (layer) => `[data-project-group="${layer}"]`;
+// The map and the data-flow diagram each carry a select button per project;
+// drive the map node — it is the one wired to lane highlighting.
+const selectButton = (id) => `.map-node[data-select-project="${id}"]`;
+
+test.beforeEach(async ({ page }) => {
+  await page.goto("/");
+});
+
+test("directory lists all eleven matrix projects across three layers", async ({ page }) => {
+  // given the site, when it loads, then all eleven rows and 3 groups render
+  await expect(page.locator(rows)).toHaveCount(11);
+  for (const layer of ["agent", "runtime", "shared"]) {
+    await expect(page.locator(group(layer))).toBeVisible();
+  }
+  await expect(
+    page.locator('[data-project-group="agent"] [data-group-count]'),
+  ).toHaveText("5 projects");
+  await expect(
+    page.locator('[data-project-group="runtime"] [data-group-count]'),
+  ).toHaveText("3 projects");
+  await expect(
+    page.locator('[data-project-group="shared"] [data-group-count]'),
+  ).toHaveText("3 projects");
+  await expect(page.locator("#results-count")).toHaveText("11 projects");
+});
+
+test("default selection shows A4AA in the architecture panel", async ({ page }) => {
+  // given a fresh load, a4aa is the selected project
+  await expect(page.locator("#architecture-name")).toHaveText("Adapter For All Agents");
+  await expect(page.locator("#architecture-layer")).toHaveText("Agent layer");
+  await expect(page.locator("#architecture-repo")).toHaveAttribute(
+    "href",
+    "https://github.com/Unka-Malloc/Adapters-for-All-Agents",
+  );
+  await expect(page.locator(selectButton("a4aa"))).toHaveClass(/is-selected/);
+});
+
+test("selecting a project updates panel, lane highlight and expanded row", async ({ page }) => {
+  // when the visitor picks Acativa on the runtime lane
+  await page.locator(selectButton("aca")).click();
+  // then the panel, the lane highlight and the directory row all follow
+  await expect(page.locator("#architecture-name")).toHaveText("Acativa");
+  await expect(page.locator("#architecture-layer")).toHaveText("Runtime layer");
+  await expect(page.locator('.map-lane[data-map-layer="runtime"]')).toHaveClass(/is-current/);
+  await expect(page.locator(`${rows}[data-project-row="aca"]`)).toHaveAttribute("open", "");
+  await expect(page.locator(`${rows}[data-project-row="a4aa"]`)).not.toHaveAttribute("open", "");
+});
+
+test("layer filter narrows the directory and rewrites the count", async ({ page }) => {
+  // when the visitor filters to the runtime layer
+  await page.locator('[data-filter="runtime"]').click();
+  // then only runtime rows stay and other groups hide
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(3);
+  await expect(page.locator(group("agent"))).toBeHidden();
+  await expect(page.locator(group("shared"))).toBeHidden();
+  await expect(page.locator("#results-count")).toHaveText("3 projects in runtime layer");
+  await expect(page.locator('[data-filter="runtime"]')).toHaveAttribute("aria-pressed", "true");
+});
+
+test("search narrows by code, name, role or layer text", async ({ page }) => {
+  // when the visitor searches a lease-related term
+  await page.locator("#project-search").fill("process-bound");
+  // then only Credential-Lease remains
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(1);
+  await expect(page.locator(`${rows}[data-project-row="cl"]`)).toBeVisible();
+  await expect(page.locator("#results-count")).toHaveText("1 project matching your search");
+});
+
+test("a query with no match reveals the empty state and clear resets", async ({ page }) => {
+  // given a query that matches nothing
+  await page.locator("#project-search").fill("zzzz");
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(0);
+  await expect(page.locator("#empty-state")).toBeVisible();
+  // when the visitor clears filters
+  await page.locator("#clear-filters").click();
+  // then the full directory returns and focus moves back to search
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(11);
+  await expect(page.locator("#empty-state")).toBeHidden();
+  await expect(page.locator("#project-search")).toBeFocused();
+});
+
+test("Escape clears the search query", async ({ page }) => {
+  await page.locator("#project-search").fill("a4aa");
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(1);
+  await page.locator("#project-search").press("Escape");
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(11);
+  await expect(page.locator("#project-search")).toHaveValue("");
+});
+
+test("the map draws bus connections between lanes and the foundation", async ({ page }) => {
+  // given the rendered map, when layout settles, then the bridge path is drawn
+  await expect(page.locator(".map-connections")).not.toHaveAttribute("d", "");
+});
+
+test("Metera is selectable, searchable and shared", async ({ page }) => {
+  await expect(page.locator(rows)).toHaveCount(11);
+  await page.locator(selectButton("mt")).click();
+  await expect(page.locator("#architecture-name")).toHaveText("Metera");
+  await expect(page.locator("#architecture-layer")).toHaveText("Shared infrastructure");
+  await expect(page.locator("#architecture-repo")).toHaveAttribute(
+    "href",
+    "https://github.com/Unka-Malloc/Metera",
+  );
+  await expect(page.locator("#project-mt")).toHaveAttribute("open", "");
+  await page.locator('[data-filter="shared"]').click();
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(3);
+  await expect(page.locator("#results-count")).toHaveText("3 projects in shared infrastructure");
+  await page.locator("#project-search").fill("quota");
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(1);
+  await expect(page.locator("#project-mt")).toBeVisible();
+  await expect(page.locator("#results-count")).toHaveText(
+    "1 project in shared infrastructure matching your search",
+  );
+  const projectIds = await page.locator("#project-data").evaluate((element) =>
+    JSON.parse(element.textContent).map((project) => project.id),
+  );
+  expect(projectIds).toContain("mt");
+  expect(projectIds).toContain("fl");
+  expect(projectIds).toContain("a4mc");
+  expect(projectIds).not.toContain("as");
+  expect(projectIds).not.toContain("probator");
+  expect(projectIds).not.toContain("gitvault");
+});
+
+test("Fairlead is selectable and searchable on the runtime layer", async ({ page }) => {
+  await page.locator(selectButton("fl")).click();
+  await expect(page.locator("#architecture-name")).toHaveText("Fairlead");
+  await expect(page.locator("#architecture-layer")).toHaveText("Runtime layer");
+  await expect(page.locator("#architecture-repo")).toHaveAttribute(
+    "href",
+    "https://github.com/Unka-Malloc/Fairlead",
+  );
+  await expect(page.locator("#project-fl")).toHaveAttribute("open", "");
+  await page.locator('[data-filter="runtime"]').click();
+  await expect(page.locator("#project-fl")).toBeVisible();
+  await page.locator("#project-search").fill("forwarding");
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(1);
+  await expect(page.locator("#project-fl")).toBeVisible();
+});
+
+test("A4MC is selectable and searchable on the agent layer", async ({ page }) => {
+  await page.locator(selectButton("a4mc")).click();
+  await expect(page.locator("#architecture-name")).toHaveText(
+    "Adapters For Messenger Channels",
+  );
+  await expect(page.locator("#architecture-layer")).toHaveText("Agent layer");
+  await expect(page.locator("#architecture-repo")).toHaveAttribute(
+    "href",
+    "https://github.com/Unka-Malloc/A4MC",
+  );
+  await expect(page.locator("#project-a4mc")).toHaveAttribute("open", "");
+  await page.locator('[data-filter="agent"]').click();
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(5);
+  await expect(page.locator("#project-a4mc")).toBeVisible();
+  await page.locator("#project-search").fill("messenger");
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(1);
+  await expect(page.locator("#project-a4mc")).toBeVisible();
+});
+
+test("Metera foundation fits desktop and narrow layouts", async ({ page }) => {
+  for (const width of [1440, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const selector of [
+      selectButton("mt"),
+      '.foundation-project[data-select-project="mt"]',
+    ]) {
+      const button = page.locator(selector);
+      await expect(button).toBeVisible();
+      const box = await button.evaluate((element) => {
+        const { left, right } = element.getBoundingClientRect();
+        return { left, right };
+      });
+      expect(box.left).toBeGreaterThanOrEqual(0);
+      expect(box.right).toBeLessThanOrEqual(width);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  }
+});
