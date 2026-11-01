@@ -125,6 +125,16 @@
     resetFilters();
     selectProject(id);
   }
+  // Badge totals restate the directory totals; derive them from the rows
+  // themselves so the markup's literal numbers stay a no-JS fallback.
+  filters.forEach(button => {
+    const badge = button.querySelector('.filter-count');
+    if (!badge) return;
+    const bucket = button.dataset.filter === 'all'
+      ? rows
+      : (groups.find(({element}) => element.dataset.projectGroup === button.dataset.filter) || {rows: []}).rows;
+    badge.textContent = String(bucket.length);
+  });
   selectProject(state.selected);
   filterProjects();
   openLinkedProject();

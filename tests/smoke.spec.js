@@ -31,6 +31,44 @@ test("directory lists all eleven matrix projects across three layers", async ({ 
   await expect(page.locator("#results-count")).toHaveText("11 projects");
 });
 
+test("filter badges derive from the rendered rows", async ({ page }) => {
+  // each layer badge equals its group's row count, the all badge equals the
+  // total rows, and the layer badges sum to it
+  const total = await page.locator(rows).count();
+  let sum = 0;
+  for (const layer of ["agent", "runtime", "shared"]) {
+    const expected = await page.locator(`${group(layer)} ${rows}`).count();
+    await expect(
+      page.locator(`[data-filter="${layer}"] .filter-count`),
+    ).toHaveText(String(expected));
+    sum += expected;
+  }
+  expect(sum).toBe(total);
+  await expect(page.locator('[data-filter="all"] .filter-count')).toHaveText(
+    String(total),
+  );
+});
+
+test("directory rows, data, symbols and controls stay in parity", async ({ page }) => {
+  // every row id is a project-data id, every id has a capability symbol and
+  // at least one select control
+  const rowIds = (
+    await page
+      .locator(rows)
+      .evaluateAll((elements) => elements.map((element) => element.dataset.projectRow))
+  ).sort();
+  const dataIds = (
+    await page
+      .locator("#project-data")
+      .evaluate((element) => JSON.parse(element.textContent).map((project) => project.id))
+  ).sort();
+  expect(rowIds).toEqual(dataIds);
+  for (const id of dataIds) {
+    await expect(page.locator(`#cap-${id}`)).toHaveCount(1);
+    expect(await page.locator(`[data-select-project="${id}"]`).count()).toBeGreaterThanOrEqual(1);
+  }
+});
+
 test("default selection shows A4AA in the architecture panel", async ({ page }) => {
   // given a fresh load, a4aa is the selected project
   await expect(page.locator("#architecture-name")).toHaveText("Adapter For All Agents");
