@@ -170,6 +170,8 @@ test("Metera is selectable, searchable and shared", async ({ page }) => {
 });
 
 test("Fairliny-Gateway is selectable and searchable on the runtime layer", async ({ page }) => {
+  const flowNode = page.locator('button.flow-node[data-select-project="fl"]').first();
+  await expect(flowNode.locator(".flow-copy span")).toHaveText("Fairliny-Gateway");
   await page.locator(selectButton("fl")).click();
   await expect(page.locator("#architecture-name")).toHaveText("Fairliny-Gateway");
   await expect(page.locator("#architecture-layer")).toHaveText("Runtime layer");
