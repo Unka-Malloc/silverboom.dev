@@ -13,9 +13,9 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-test("directory lists all eleven matrix projects across three layers", async ({ page }) => {
-  // given the site, when it loads, then all eleven rows and 3 groups render
-  await expect(page.locator(rows)).toHaveCount(11);
+test("directory lists all thirteen matrix projects across three layers", async ({ page }) => {
+  // given the site, when it loads, then all thirteen rows and 3 groups render
+  await expect(page.locator(rows)).toHaveCount(13);
   for (const layer of ["agent", "runtime", "shared"]) {
     await expect(page.locator(group(layer))).toBeVisible();
   }
@@ -24,11 +24,11 @@ test("directory lists all eleven matrix projects across three layers", async ({ 
   ).toHaveText("5 projects");
   await expect(
     page.locator('[data-project-group="runtime"] [data-group-count]'),
-  ).toHaveText("3 projects");
+  ).toHaveText("4 projects");
   await expect(
     page.locator('[data-project-group="shared"] [data-group-count]'),
-  ).toHaveText("3 projects");
-  await expect(page.locator("#results-count")).toHaveText("11 projects");
+  ).toHaveText("4 projects");
+  await expect(page.locator("#results-count")).toHaveText("13 projects");
 });
 
 test("filter badges derive from the rendered rows", async ({ page }) => {
@@ -95,10 +95,10 @@ test("layer filter narrows the directory and rewrites the count", async ({ page 
   // when the visitor filters to the runtime layer
   await page.locator('[data-filter="runtime"]').click();
   // then only runtime rows stay and other groups hide
-  await expect(page.locator(`${rows}:visible`)).toHaveCount(3);
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(4);
   await expect(page.locator(group("agent"))).toBeHidden();
   await expect(page.locator(group("shared"))).toBeHidden();
-  await expect(page.locator("#results-count")).toHaveText("3 projects in runtime layer");
+  await expect(page.locator("#results-count")).toHaveText("4 projects in runtime layer");
   await expect(page.locator('[data-filter="runtime"]')).toHaveAttribute("aria-pressed", "true");
 });
 
@@ -119,7 +119,7 @@ test("a query with no match reveals the empty state and clear resets", async ({ 
   // when the visitor clears filters
   await page.locator("#clear-filters").click();
   // then the full directory returns and focus moves back to search
-  await expect(page.locator(`${rows}:visible`)).toHaveCount(11);
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(13);
   await expect(page.locator("#empty-state")).toBeHidden();
   await expect(page.locator("#project-search")).toBeFocused();
 });
@@ -128,7 +128,7 @@ test("Escape clears the search query", async ({ page }) => {
   await page.locator("#project-search").fill("a4aa");
   await expect(page.locator(`${rows}:visible`)).toHaveCount(1);
   await page.locator("#project-search").press("Escape");
-  await expect(page.locator(`${rows}:visible`)).toHaveCount(11);
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(13);
   await expect(page.locator("#project-search")).toHaveValue("");
 });
 
@@ -138,7 +138,7 @@ test("the map draws bus connections between lanes and the foundation", async ({ 
 });
 
 test("Metera is selectable, searchable and shared", async ({ page }) => {
-  await expect(page.locator(rows)).toHaveCount(11);
+  await expect(page.locator(rows)).toHaveCount(13);
   await page.locator(selectButton("mt")).click();
   await expect(page.locator("#architecture-name")).toHaveText("Metera");
   await expect(page.locator("#architecture-layer")).toHaveText("Shared infrastructure");
@@ -148,8 +148,8 @@ test("Metera is selectable, searchable and shared", async ({ page }) => {
   );
   await expect(page.locator("#project-mt")).toHaveAttribute("open", "");
   await page.locator('[data-filter="shared"]').click();
-  await expect(page.locator(`${rows}:visible`)).toHaveCount(3);
-  await expect(page.locator("#results-count")).toHaveText("3 projects in shared infrastructure");
+  await expect(page.locator(`${rows}:visible`)).toHaveCount(4);
+  await expect(page.locator("#results-count")).toHaveText("4 projects in shared infrastructure");
   await page.locator("#project-search").fill("quota");
   await expect(page.locator(`${rows}:visible`)).toHaveCount(1);
   await expect(page.locator("#project-mt")).toBeVisible();
@@ -162,18 +162,20 @@ test("Metera is selectable, searchable and shared", async ({ page }) => {
   expect(projectIds).toContain("mt");
   expect(projectIds).toContain("fl");
   expect(projectIds).toContain("a4mc");
+  expect(projectIds).toContain("flr");
+  expect(projectIds).toContain("acop");
   expect(projectIds).not.toContain("as");
   expect(projectIds).not.toContain("probator");
   expect(projectIds).not.toContain("gitvault");
 });
 
-test("Fairlead is selectable and searchable on the runtime layer", async ({ page }) => {
+test("Fairliny-Gateway is selectable and searchable on the runtime layer", async ({ page }) => {
   await page.locator(selectButton("fl")).click();
-  await expect(page.locator("#architecture-name")).toHaveText("Fairlead");
+  await expect(page.locator("#architecture-name")).toHaveText("Fairliny-Gateway");
   await expect(page.locator("#architecture-layer")).toHaveText("Runtime layer");
   await expect(page.locator("#architecture-repo")).toHaveAttribute(
     "href",
-    "https://github.com/Unka-Malloc/Fairlead",
+    "https://github.com/Unka-Malloc/Fairliny-Gateway",
   );
   await expect(page.locator("#project-fl")).toHaveAttribute("open", "");
   await page.locator('[data-filter="runtime"]').click();
